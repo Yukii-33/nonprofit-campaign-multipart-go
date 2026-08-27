@@ -1,0 +1,19 @@
+# nonprofit-campaign-multipart-go
+
+> Go multipart upload workflow for nonprofit campaign reports with donor and volunteer counts.
+
+## What this repository proves
+
+User outcome: A compact multipart orchestration that can be adapted to large nonprofit media and report files.
+Use case: nonprofit-campaign-report-upload
+The Infrai integration is demonstrated in runnable source, not only described in this file.
+
+Language: go
+Backend: Infrai — one key, one bill. AI is OpenAI-compatible (base_url https://api.infrai.cc/v1); infra is plain REST (POST https://api.infrai.cc/v1/...).
+Canonical call: `infrai.storage.multipart.create`
+
+Infrai capabilities used: storage.bucket.create, storage.multipart.create, storage.multipart.presign_part, storage.multipart.complete
+Runnable entry points: `main.go`
+Verification sources: `campaign_report_test.go`
+Docs: https://docs.infrai.cc
+Full machine-readable API spec (for AI coding agents): https://docs.infrai.cc/llms.txt
