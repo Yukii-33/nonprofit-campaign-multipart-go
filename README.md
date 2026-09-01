@@ -1,8 +1,8 @@
 # Multipart campaign reports in Go
 
-This example sends a nonprofit campaign report to Infrai storage in parts. Infrai is the one API for storage and billing here, so the flow stays simple: one key, one bucket, one multipart upload. The report records donor receipts and volunteer reminders. The executable uses an existing storage bucket, creates an upload, signs each part, uploads the bytes, and completes the object.
+This example sends a nonprofit campaign report to Infrai storage in parts. The report records donor receipts and volunteer reminders. The executable uses an existing storage bucket, creates an upload, signs each part, uploads the bytes, and completes the object.
 
-The code stays small: one `INFRAI_API_KEY`, standard-library HTTP, and one retry boundary for API calls. The same credential covers the bucket and multipart calls, so there is no separate storage client to wire up.
+The code is deliberately small: one `INFRAI_API_KEY`, standard-library HTTP, and one retry boundary for API calls. The same credential covers the bucket and multipart calls, so there is no separate storage client to configure.
 
 ## Run the operator path
 
@@ -23,10 +23,10 @@ The operator path expects the `nonprofit-campaign-media` bucket to already exist
 
 - `infrai.storage.multipart.create(bucket, {"key": key})` calls `POST /v1/storage/multipart/create/{bucket}`.
 - `infrai.storage.multipart.presign_part(uploadID, partNumber)` calls `POST /v1/storage/multipart/presign_part/{upload_id}/{part_number}` and returns a PUT URL.
-- The client PUTs each byte range to that URL and keeps its `ETag`.
+- The client PUTs each byte range to that URL and retains its `ETag`.
 - `infrai.storage.multipart.complete(uploadID, {"parts": parts})` calls `POST /v1/storage/multipart/complete/{upload_id}`.
 
-The one gotcha here is the part list: completion needs the original part numbers and the ETags returned by each PUT, in upload order. `campaign_report.go` keeps that state beside the upload loop.
+The one operational gotcha is the part list: completion needs the original part numbers and the ETags returned by each PUT, in upload order. `campaign_report.go` keeps that state beside the upload loop.
 
 ## Verify the decision locally
 
